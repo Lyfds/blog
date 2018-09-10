@@ -1,6 +1,8 @@
 <?php
 namespace models;
 
+use PDO;
+
 class User extends Base
 {
     public function add($email,$password)
@@ -29,11 +31,55 @@ class User extends Base
             // 登录成功，把用户信息保存到 SESSION
             $_SESSION['id'] = $user['id'];
             $_SESSION['email'] = $user['email'];
+            $_SESSION['money'] = $user['money'];
             return TRUE;
         }
         else
         {
             return FALSE;
+        }
+    }
+
+    // 为用户增加金额
+    public function addMoney($money, $userId)
+    {
+        $stmt = self::$pdo->prepare("UPDATE users SET money=money+? WHERE id=?");
+        $stmt->execute([
+            $money,
+            $userId
+        ]);
+
+        // 更新 Redis
+        $redis = \libs\Redis::getInstance();
+
+        // 拼出 redis 中的键
+        $key = 'user_money:'.$userId;
+
+        // 增加余额
+        $ret = $redis->incrby($key, $money);
+
+        echo $ret;
+
+    }
+
+    // 获取余额
+    public function getMoney()
+    {
+        $id = $_SESSION['id'];
+        $redis = \libs\Redis::getInstance();
+        $key = 'user_money:'.$id;
+
+        $money = $redis->get($key);
+        if($money)
+            return $money;
+        else
+        {
+            $stmt = self::$pdo->prepare('SELECT money FROM users WHERE id = ?');
+            $stmt->execute([$id]);
+            $money = $stmt->fetch( PDO::FETCH_COLUMN );
+            // 保存到 Redis
+            $redis->set($key, $money);
+            return $money;
         }
     }
 }

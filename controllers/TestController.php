@@ -3,6 +3,14 @@ namespace controllers;
 
 class TestController
 {
+    public function testSnowflake()
+    {
+        $flake = new \libs\Snowflake(1013);
+        for($i=0; $i<10;$i++) {  
+            echo $flake->nextId() . '<br>';
+        }
+
+    }
     public function testPurify()
     {
         // 测试字符串

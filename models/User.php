@@ -44,21 +44,12 @@ class User extends Base
     public function addMoney($money, $userId)
     {
         $stmt = self::$pdo->prepare("UPDATE users SET money=money+? WHERE id=?");
-        $stmt->execute([
+        return $stmt->execute([
             $money,
             $userId
         ]);
 
-        // 更新 Redis
-        $redis = \libs\Redis::getInstance();
-
-        // 拼出 redis 中的键
-        $key = 'user_money:'.$userId;
-
-        // 增加余额
-        $ret = $redis->incrby($key, $money);
-
-        echo $ret;
+        
 
     }
 
@@ -66,20 +57,35 @@ class User extends Base
     public function getMoney()
     {
         $id = $_SESSION['id'];
-        $redis = \libs\Redis::getInstance();
-        $key = 'user_money:'.$id;
+        // 查询数据库        
+        $stmt = self::$pdo->prepare('SELECT money FROM users WHERE id = ?');
+        $stmt->execute([$id]);
+        $money = $stmt->fetch( PDO::FETCH_COLUMN );
+        // 更新到 SESSION 中
+        $_SESSION['money'] = $money;
+        return $money;
+    }
 
-        $money = $redis->get($key);
-        if($money)
-            return $money;
+    // 测试事务
+    public function trans()
+    {
+        // 要求：所有的SQL语句必须都成功，或者都失败
+
+        // 事务：让多条 SQL 语句都成功或者都失败
+        // 如何使用事务
+
+        // 开启事务
+        self::$pdo->exec('start transaction');
+
+        // 执行多个 SQL 
+        $ret1 = self::$pdo->exec("update users set email='abc@126.com' where id=2");  // 正确的
+        $ret2 = self::$pdo->exec("update users set email='bcd@126.com',money='123.32' where id=3");  // 正确
+
+
+        // 只有都成功时才提交事务，否则回滚事务
+        if($ret1 !== FALSE && $ret2 !== FALSE)
+            self::$pdo->exec('commit');    // 提交事务
         else
-        {
-            $stmt = self::$pdo->prepare('SELECT money FROM users WHERE id = ?');
-            $stmt->execute([$id]);
-            $money = $stmt->fetch( PDO::FETCH_COLUMN );
-            // 保存到 Redis
-            $redis->set($key, $money);
-            return $money;
-        }
+            self::$pdo->exec('rollback');  // 回滚事务
     }
 }

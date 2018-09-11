@@ -7,6 +7,12 @@ use models\Order;
 
 class UserController
 {
+    public function money()
+    {
+        $user = new User;
+        echo $user->getMoney();
+    }
+
     public function docharge()
     {
         // 生成订单

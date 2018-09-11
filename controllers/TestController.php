@@ -3,6 +3,12 @@ namespace controllers;
 
 class TestController
 {
+    public function testTrans()
+    {
+        $model = new \models\User;
+        $model->trans();
+    }
+
     public function testSnowflake()
     {
         $flake = new \libs\Snowflake(1013);

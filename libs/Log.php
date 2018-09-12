@@ -8,7 +8,7 @@ class Log
     public function __construct($fileName)
     {
         // 打开日志文件
-        $this->fp = fopen(ROOT . 'logs/'.$fileName.'.log', 'a');
+        $this->fp = fopen(ROOT . 'storage/logs/'.$fileName.'.log', 'a');
     }
 
     // 向日志文件中追加内容

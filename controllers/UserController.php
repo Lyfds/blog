@@ -75,32 +75,10 @@ class UserController
     }
     public function setavatar()
     {
-        /* 先创建目录 */
-        $root = ROOT.'public/uploads/';
-        // 今天日期
-        $date = date('Ymd');  // 20180913
-        // 如果没有这个目录就创建目录
-        if(!is_dir($root . $date))
-        {
-            // 创建目录（第二个参数：有写的权限（只对 Linux 系统)）
-            mkdir($root . $date, 0777);
-        }
+        $upload = \libs\Uploader::make();
+        $path = $upload->upload('avatar', 'avatar');
 
-        // 生成唯一的名字
-        $name = md5( time() . rand(1,9999) );  // 32 位字符串
-
-        // 先取出原来这个图片的后缀
-        // strrchr：从最后某一个字符开始截取到最后
-        $ext = strrchr($_FILES['avatar']['name'], '.');    // .jpg
-
-        // 补上扩展名
-        $name = $name . $ext;
-
-        // 移动图片
-        move_uploaded_file($_FILES['avatar']['tmp_name'], $root . $date .'/' . $name);
-
-        echo $root . $date .'/' . $name;
-
+        echo $path;
     }
 
     public function avatar()

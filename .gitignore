@@ -5,3 +5,6 @@
 /config.php
 /public/uploads
 /storage/
+/tmp/
+/excel/
+/test/

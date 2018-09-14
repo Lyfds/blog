@@ -4,6 +4,14 @@ namespace controllers;
 
 class ToolController
 {
+    public function __construct()
+    {
+        if(config('mode') != 'dev')
+        {
+            die('非法访问');
+        }
+    }
+    
     public function users()
     {
         $model = new \models\User;
@@ -16,10 +24,6 @@ class ToolController
 
     public function login()
     {
-        if(config('mode') != 'dev')
-        {
-            die('非法访问');
-        }
         $email = $_GET['email'];
         // 退出
         $_SESSION = [];

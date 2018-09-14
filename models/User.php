@@ -5,6 +5,15 @@ use PDO;
 
 class User extends Base
 {
+    public function setAvatar($path)
+    {
+        $stmt = self::$pdo->prepare('UPDATE users SET avatar=? WHERE id=?');
+        $stmt->execute([
+            $path,
+            $_SESSION['id']
+        ]);
+    }
+
     public function add($email,$password)
     {
         $stmt = self::$pdo->prepare("INSERT INTO users (email,password) VALUES(?,?)");
@@ -32,6 +41,7 @@ class User extends Base
             $_SESSION['id'] = $user['id'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['money'] = $user['money'];
+            $_SESSION['avatar'] = $user['avatar'];
             return TRUE;
         }
         else
@@ -87,5 +97,12 @@ class User extends Base
             self::$pdo->exec('commit');    // 提交事务
         else
             self::$pdo->exec('rollback');  // 回滚事务
+    }
+
+
+    public function getAll()
+    {
+        $stmt = self::$pdo->query('SELECT * FROM users');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

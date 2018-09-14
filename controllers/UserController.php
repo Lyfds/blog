@@ -73,12 +73,29 @@ class UserController
     {
         view('users.album');
     }
+
+    // 设置头像
     public function setavatar()
     {
+        // 上传新头像
         $upload = \libs\Uploader::make();
         $path = $upload->upload('avatar', 'avatar');
 
-        echo $path;
+        // 保存到 user 表中
+        $model = new \models\User;
+        $model->setAvatar('/uploads/'.$path);
+
+        // 注意：网站中图片有两个路径
+        // 浏览器（从网站根目录开始找）： /uploads/avatar/20180914/041a05ec7f7179dab8e00b13de997f1a.jpg
+        // 硬盘上的路径 :    D:/www/blog/7f7179dab8e00b13de997f1a.jpg
+        // 删除原头像
+        @unlink( ROOT . 'public'.$_SESSION['avatar'] );
+
+        // 设置新头像
+        $_SESSION['avatar'] = '/uploads/'.$path;
+
+
+        message('设置成功', 2, '/blog/index');
     }
 
     public function avatar()

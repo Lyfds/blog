@@ -5,6 +5,46 @@ use PDO;
 
 class Blog extends Base
 {
+    // 取出点赞过这个日志的用户信息
+    public function agreeList($id)
+    {
+        $sql = 'SELECT b.id,b.email,b.avatar
+                 FROM blog_agrees a
+                  LEFT JOIN users b ON a.user_id = b.id
+                   WHERE a.blog_id=?';                   
+
+        $stmt = self::$pdo->prepare($sql);
+
+        $stmt->execute([
+            $id
+        ]);
+
+        return $stmt->fetchAll( PDO::FETCH_ASSOC );
+    }
+
+    // 点赞
+    public function agree($id)
+    {
+        // 判断是否点过
+        $stmt = self::$pdo->prepare('SELECT COUNT(*) FROM blog_agrees WHERE user_id=? AND blog_id=?');
+        $stmt->execute([
+            $_SESSION['id'],
+            $id
+        ]);
+        $count = $stmt->fetch( PDO::FETCH_COLUMN );
+        if($count == 1)
+        {
+            return FALSE;
+        }
+        
+        // 点赞
+        $stmt = self::$pdo->prepare("INSERT INTO blog_agrees(user_id,blog_id) VALUES(?,?)");
+        return $stmt->execute([
+            $_SESSION['id'],
+            $id
+        ]);
+    }
+
     // 为某一个日志生成静态页面
     // 参数：日志的ID
     public function makeHtml($id)

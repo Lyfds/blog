@@ -39,10 +39,21 @@ class Blog extends Base
         
         // 点赞
         $stmt = self::$pdo->prepare("INSERT INTO blog_agrees(user_id,blog_id) VALUES(?,?)");
-        return $stmt->execute([
+        $ret = $stmt->execute([
             $_SESSION['id'],
             $id
         ]);
+
+        // 更新点赞数
+        if($ret)
+        {
+            $stmt = self::$pdo->prepare('UPDATE blogs SET agree_count=agree_count+1 WHERE id=?');
+            $stmt->execute([
+                $id
+            ]);
+        }
+
+        return $ret;
     }
 
     // 为某一个日志生成静态页面

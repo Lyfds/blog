@@ -2,7 +2,7 @@
 // 使用 redis 保存 SESSION
 ini_set('session.save_handler', 'redis');
 // 设置 redis 服务器的地址、端
-ini_set('session.save_path', 'tcp://127.0.0.1:32768?database=3');
+ini_set('session.save_path', 'tcp://127.0.0.1:6379?database=3');
 
 session_start();
 

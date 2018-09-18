@@ -61,6 +61,6 @@ class RedbagController {
         ]);
     }
     public function rob_view() {
-        view('rodbag/rob');
+        view('redbag.rob');
     }
 }

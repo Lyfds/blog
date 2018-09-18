@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>抢红包</title>
+    <style>
+       #btn-rob {
+           padding: 30px;
+           border-radius: 10px;
+           cursor: pointer;
+           font-size: 30px;
+       }
+       #btn-rob:hover {
+           background-color: #F00;
+           color: #FFF;
+           font-weight: bold;
+           border: 5px solid skyblue;
+       }
+    </style>
+</head>
+<body>
+    <?php view('common.footer') ?>
+    <h1>抢红包</h1>
+    <button id="btn-rob">抢红包</button>
+    <?php view('common.footer') ?>
+</body>
+</html>
+<script>
+    function time_range(beginTime,endTime) {
+        var strb = beginTime.split(":");
+        if(strb.length != 2) {
+            return false;
+        }
+        var stre
+    }
+</script>

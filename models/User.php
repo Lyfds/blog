@@ -7,7 +7,7 @@ class User extends Base
 {
     public function setAvatar($path)
     {
-        $stmt = self::$pdo->prepare('UPDATE users SET avatar=? WHERE id=?');
+        $stmt = self::$pdo->prepare('UPDATE users SET headimg=? WHERE id=?');
         $stmt->execute([
             $path,
             $_SESSION['id']
@@ -41,7 +41,7 @@ class User extends Base
             $_SESSION['id'] = $user['id'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['money'] = $user['money'];
-            $_SESSION['avatar'] = $user['avatar'];
+            $_SESSION['headimg'] = $user['headimg'];
             return TRUE;
         }
         else

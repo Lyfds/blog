@@ -1,6 +1,6 @@
 <?php
 namespace controllers;
-
+use Intervention\Image\ImageManagerStatic as Image;
 // 引入模型类
 use models\User;
 use models\Order;
@@ -81,6 +81,11 @@ class UserController
         $upload = \libs\Uploader::make();
         $path = $upload->upload('avatar', 'avatar');
 
+        //裁切图片
+        $image = Image::make(ROOT.'public/uploads/'.$path);
+        $image->crop((int)$_POST['w'],(int)$_POST['h'],(int)$_POST['x'],(int)$_POST['y']);
+        $image->save(ROOT.'public/uploads/'.$path);
+
         // 保存到 user 表中
         $model = new \models\User;
         $model->setAvatar('/uploads/'.$path);
@@ -89,10 +94,10 @@ class UserController
         // 浏览器（从网站根目录开始找）： /uploads/avatar/20180914/041a05ec7f7179dab8e00b13de997f1a.jpg
         // 硬盘上的路径 :    D:/www/blog/7f7179dab8e00b13de997f1a.jpg
         // 删除原头像
-        @unlink( ROOT . 'public'.$_SESSION['avatar'] );
+        @unlink( ROOT . 'public'.$_SESSION['headimg'] );
 
         // 设置新头像
-        $_SESSION['avatar'] = '/uploads/'.$path;
+        $_SESSION['headimg'] = '/uploads/'.$path;
 
 
         message('设置成功', 2, '/blog/index');

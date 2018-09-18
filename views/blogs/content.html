@@ -190,13 +190,10 @@
 <script>
 
     new Vue({
-        // 挂载
         el: "#comment_app",
-        // 定义数据
         data: {
             content: '',
             blog_id: "<?=$blog['id']?>",
-            // 评论列表数据
             comments: []
         },
         // 在创建完 Vue 之后执行
@@ -205,23 +202,18 @@
             axios.get('/comment/comment_list?id=' + id)
                 .then(res => {
                     if (res.data.status_code == 200) {
-                        // 把服务器返回的数据放到绑定的数组上，会自动更新到页面
                         this.comments = res.data.data
                     }
                 })
         },
-        // 定义函数
         methods: {
             submit: function () {
-                // 执行 AJAX 发表评论
                 axios.post('/comment/comments', {
                     content: this.content,
                     blog_id: this.blog_id
                 })
                     .then(res => {
-                        // AJAX 执行完之后执行这里
                         if (res.data.status_code == 200) {
-                            // 把新发表的添加到数组中的最前面
                             this.comments.unshift({
                                 email: res.data.data.email,
                                 content: res.data.data.content,

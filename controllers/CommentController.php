@@ -3,7 +3,7 @@ namespace controllers;
 class CommentController {
     public function comments() {
         $data = file_get_contents('php://input');
-        $_POST = json_decode($data,TRUE);
+        $_POST = json_decode($data, TRUE);
 
         if(!isset($_SESSION['id'])) {
             echo json_encode([
@@ -12,7 +12,7 @@ class CommentController {
             ]);
             exit;
         }
-        $content = e($_POST['content']);
+        $content = e( $_POST['content'] );
         $blog_id = $_POST['blog_id'];
         $model = new \models\Comment;
         $model->add($content,$blog_id);
@@ -28,7 +28,7 @@ class CommentController {
         ]);
         exit;
      }
-     public function comments_list() {
+     public function comment_list() {
          $blogId = $_GET['id'];
          $model = new \models\Comment;
          $data = $model->getComments($blogId);

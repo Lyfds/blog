@@ -23,6 +23,34 @@
         background-color: #EEE;
         padding: 5px;
     }
+    .comment-list {
+        border: 1px solid skyblue;
+        margin-top: 20px;
+        padding: 10px;
+    }
+    .comment-list .left {
+        text-align: center;
+        float: left;
+        width: 15%;
+    }
+    .comment-list .left img {
+        border-radius: 50%;
+    }
+    .comment-list .right {
+        float: left;
+        font-size: 12px;
+        margin-left: 10px;
+        width: 75%;
+        margin-top: 20px;
+    }
+    .comment-list .date {
+        color: #999;
+        margin-top: 40px;
+        
+    }
+    .clearfix {
+        clear: both;
+    }
     </style>
 </head>
 <body>
@@ -43,6 +71,28 @@
         <h3>点赞列表</h3>
         <div id="avatar-list"></div>
     </div>
+
+    <div class="comment-list">
+        <div class="left">
+            <img src="/images/avatar.jpg" width="50" height="50" alt="">
+            <p>123@126.com</p>
+        </div>
+        <div class="right">
+            <div class="con">
+                出席论坛期间，习近平主席还同与会国家领导人进行友好交流，
+            </div>
+            <div class="date">
+                2018-09-18 15:35:24
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <br><br>
+    <form action="">
+        <textarea cols="60" rows="10"></textarea>
+        <br>
+        <input type="submit" value="发表评论">
+    </form>
     
     <?php view('common.footer') ?>
     
@@ -120,8 +170,8 @@ $.ajax({
             var html = '';
             for(var i=0; i<data.data.length; i++)
             {
-                var avatar = data.data[i].avatar ? data.data[i].avatar : '/images/avatar.jpg';
-                html += '<img title="'+data.data[i].email+'" class="avatar" src="'+avatar+'" alt="">';
+                var avatar = data.data[i].headimg ? data.data[i].headimg : '/images/avatar.jpg';
+                html += '<img title="'+data.data[i].email+'" class="avatar" src="'+headimg+'" alt="">';
             }
             // 把字符串放到页面
             $("#avatar-list").html( html )

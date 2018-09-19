@@ -6,16 +6,15 @@
 </div>
 <?php unset($_SESSION['_MESS_']) ?>
 <script>
-var m = document.getElementById('_mess_');
-var s = 3;
-var si = setInterval(function(){
-    s--;
-    if(s==0)
-    {
-        m.style.display='none';
-        clearInterval(si);
-    }
-}, 1000);
+    var m = document.getElementById('_mess_');
+    var s = 3;
+    var si = setInterval(function () {
+        s--;
+        if (s == 0) {
+            m.style.display = 'none';
+            clearInterval(si);
+        }
+    }, 1000);
 </script>
 <?php endif; ?>
 
@@ -24,35 +23,36 @@ var si = setInterval(function(){
 
 <?php if( isset($_SESSION['id']) ): ?>
 
-    <a href="/user/charge">充值</a>
-    <a href="/user/orders">充值列表</a>
-    <a href="/blog/index">日志列表</a>
-    <a href="/blog/create">发表日志</a>
+<a href="/user/charge">充值</a>
+<a href="/user/orders">充值列表</a>
+<a href="/blog/index">日志列表</a>
+<a href="/blog/create">发表日志</a>
 
-    <img style="width:50px;height:50px;border-radius: 50%;vertical-align: middle;" src="<?=$_SESSION['headimg']==''?'/images/avatar.jpg':$_SESSION['headimg']?>" />
-    <?=$_SESSION['email']?>
-    （ <span id="span-money" style="color:#F00;font-weight:bold;"><?=$_SESSION['money']?></span> 元 
-    
-        <input id="update-money" type="button" value="更新余额">
+<img style="width:50px;height:50px;border-radius: 50%;vertical-align: middle;" src="<?=$_SESSION['headimg']==''?'/images/avatar.jpg':$_SESSION['headimg']?>" />
+<?=$_SESSION['email']?>
+（ <span id="span-money" style="color:#F00;font-weight:bold;">
+    <?=$_SESSION['money']?></span> 元
 
-        <script>
-        $("#update-money").click(function(){
-            $("#span-money").load("/user/money");
-        });
-        </script>
-    ）
+<input id="update-money" type="button" value="更新余额">
 
-    <a href="/user/avatar">设置头像</a>
-    <a href="/user/album">我的相册</a>
-    <a href="/blog/makeExcel">导出 Excel</a>
-    <a style="color:#F00;font-size:1.2em;" href="/redbag/rob_view">快来抢啊~</a>
-    
-    <a href="/user/logout">退出</a>
+<script>
+    $("#update-money").click(function () {
+        $("#span-money").load("/user/money");
+    });
+</script>
+）
+
+<a href="/user/avatar">设置头像</a>
+<a href="/user/album">我的相册</a>
+<a href="/blog/makeExcel">导出 Excel</a>
+<a style="color:#F00;font-size:1.2em;" href="/redbag/rob_view">快来抢啊~</a>
+
+<a href="/user/logout">退出</a>
 
 <?php else: ?>
 
-    <a href="/user/register">注册</a>
-    <a href="/user/login">登录</a>
+<a href="/user/register">注册</a>
+<a href="/user/login">登录</a>
 
 <?php endif; ?>
 

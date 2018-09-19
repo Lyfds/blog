@@ -6,7 +6,13 @@ use models\User;
 use models\Order;
 
 class UserController
-{
+{   
+
+    //设置活跃用户
+    public function setActiveUsers() {
+        $user = new User;
+        $user->computeActiveUsers();
+    }
     public function uploadbig()
     {
         /* 接收提交的数据 */
